@@ -1,4 +1,4 @@
-package LW_03.lib;
+package LW_03.Q3;
 
 public class Owner {
     private String ownerName;

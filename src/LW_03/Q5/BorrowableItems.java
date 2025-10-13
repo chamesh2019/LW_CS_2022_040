@@ -1,4 +1,5 @@
 package LW_03.Q5;
 
-public class BorrowableItems {
+abstract public class BorrowableItems {
+    public abstract void displayInfo();
 }

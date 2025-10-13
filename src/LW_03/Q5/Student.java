@@ -1,4 +1,4 @@
 package LW_03.Q5;
 
-public class Student {
+public class Student extends Person {
 }

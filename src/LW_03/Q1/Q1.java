@@ -1,6 +1,4 @@
-package LW_03;
-
-import LW_03.lib.Temperature;
+package LW_03.Q1;
 
 import java.util.Scanner;
 
