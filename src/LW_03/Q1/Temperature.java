@@ -1,4 +1,4 @@
-package LW_03;
+package LW_03.lib;
 
 public class Temperature {
     private double celsius;
