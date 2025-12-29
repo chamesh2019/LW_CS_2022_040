@@ -2,6 +2,10 @@ package LW_07;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class MainFrame extends JFrame {
     private static final String FRAME_TITLE = "Registration From";
@@ -9,6 +13,10 @@ public class MainFrame extends JFrame {
     private static final int FRAME_HEIGHT = 500;
     private static final int FRAME_X = 700;
     private static final int FRAME_Y = 300;
+
+    private String connectionString = "jdbc:mysql://localhost:3306/registration?useSSL=false";
+    private String user = "root";
+    private String password = "";
 
     public MainFrame(){
         setTitle(FRAME_TITLE);
@@ -112,6 +120,14 @@ public class MainFrame extends JFrame {
         submitButton.setLocation(70, 390);
         container.add(submitButton);
 
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+
+
         submitButton.addActionListener(e -> {
             if (nameField.getText().isBlank()) {
                 output.setText("Name is required!");
@@ -136,6 +152,21 @@ public class MainFrame extends JFrame {
                         "DOB: " + dayBox.getSelectedItem() + "-" + monthBox.getSelectedItem() + "-" + yearBox.getSelectedItem() + "\n" +
                         "Address: " + addressArea.getText();
             output.setText(txt);
+
+            try {
+                Connection connection = DriverManager.getConnection(connectionString, user, password);
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO `users` (`name`, `mobile`, `gender`, `DOB`, `address`) VALUES (?, ?, ?, ?, ?)");
+                statement.setString(1, nameField.getText());
+                statement.setString(2, mobileField.getText());
+                statement.setString(3, genderMale.isSelected() ? "Male" : "Female");
+                String DOB_Value = dayBox.getSelectedItem() + "-" + monthBox.getSelectedItem() + "-" + yearBox.getSelectedItem();
+                statement.setString(4, DOB_Value);
+                statement.setString(5, addressArea.getText());
+                statement.execute();
+                connection.close();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         JButton resetButton = new JButton("Reset");
